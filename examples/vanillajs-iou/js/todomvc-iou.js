@@ -1,3 +1,6 @@
+//
+//============ IOU =======================
+//
 var inputs= {
   newtodo:   doc("#new-todo"),
   toggleAll: doc("#toggle-all"),
@@ -17,28 +20,47 @@ var outputs={
 
 })();
 
-
-//===================
-
+//
+//============ Domain =======================
+//
 var Domain= function(){
-  var that=this;
 
-  this.active= [];
-  this.completed=[];
-  this.getAll= function(){ return that.active.concat(that.completed);}
+  var me=this;
+  var active= [];
+  var completed=[];
+  var lastId=0;
 
-  this.addEntry= function(entry){
-    if(typeof Entry != "Entry"){entry= new Domain.Entry(entry.toString())}
+  this.nextId=function(){return ++lastId};
+
+  this.ToDo= function(description){
+    this.id= me.nextId();
+    this.description=description;
+  };
+  this.ToDo.prototype.complete= function(){
+    this.complete=true;
+    var idx;
+    if(idx=active.indexOf(this)>=0){
+      active.splice(idx, 1);
+      completed.push(this);
+    }
+    return this;
+  };
+
+  this.getAll= function(){ return active.concat(completed);};
+  this.getActive= function(){ return active;};
+  this.getCompleted= function(){ return completed;};
+
+  this.getToDoById = function (id) {
+    return me.getAll().find(function(e){return e.id==id});
+  };
+
+
+  this.addToDo= function(newTodo){
+    if(! (newTodo instanceof me.ToDo)){newTodo= new me.ToDo(newTodo.toString())}
     //
-    that.active.push(entry);
-    return that;
+    active.push(newTodo);
+    return me;
   }
-
 };
-Domain.nextId=Date.now;
-Domain.Entry= function(description){
-  this.id= Domain.nextId();
-  this.description=description;
-}
 
 var domain= new Domain();

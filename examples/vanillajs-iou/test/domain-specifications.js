@@ -3,34 +3,51 @@
 describe('iodu Domain tests', function () {
   'use strict';
 
-  var setUpModel = function () {
-      domain = new Domain();
-  };
-  beforeEach(setUpModel)
+  var emptyDomain = function () { domain = new Domain(); };
 
-  it('addEntry then getAll returns the added Entry(ies)',function(){
+  beforeEach(emptyDomain);
 
-    var entry1=new Domain.Entry("todo");
-    var entry2=new Domain.Entry("2");
+  it('A todo can be added, and then retrieved',function(){
 
-    domain.addEntry(entry1).addEntry(entry2);
+    var entry1=new domain.ToDo("todo");
+    var entry2=new domain.ToDo("2");
     //
-    var found1=domain.getAll().filter(function(e,i,arr){return e.id===entry1.id;});
-    var found2=domain.getAll().filter(function(e,i,arr){return e.id===entry2.id;});
-    expect(found1).toBeTruthy();
+    domain.addToDo(entry1).addToDo(entry2);
+    var found1= domain.getToDoById(entry1.id);
+    var found2= domain.getToDoById(entry2.id);
+    //
+    expect(found1).toBe(entry1);
+    expect(found2).toBe(entry2);
   });
 
 
-  describe('routing', function () {
+  describe('Querying', function () {
 
-      it('should show all entries without "all" route', function () {
-      });
+    var todoActive, todoCompleted;
 
-      it('should show active entries', function () {
-      });
+    beforeEach(function(){
+      todoActive= new domain.ToDo("todo 1 active");
+      todoCompleted= new domain.ToDo("todo 2 completed");
+      domain.addToDo(todoActive);
+      domain.addToDo(todoCompleted);
+      todoCompleted.complete();
+    });
 
-      it('should show completed entries', function () {
-      });
+
+    it('should getAll entries', function () {
+      expect( domain.getAll().indexOf(todoActive) ).toBeGreaterThan(-1);
+      expect( domain.getAll().indexOf(todoCompleted) ).toBeGreaterThan(-1);
+    });
+
+    it('should get active entries', function () {
+      expect( domain.getActive().indexOf(todoActive)).toBeGreaterThan(-1);
+      expect( domain.getActive().indexOf(todoCompleted)).toBe(-1);
+    });
+
+    it('should get completed entries', function () {
+      expect( domain.getCompleted().indexOf(todoActive)).toBe(-1);
+      expect( domain.getCompleted().indexOf(todoCompleted)).toBeGreaterThan(-1);
+    });
   });
 
   it('should show the content block when todos exists', function () {
@@ -61,83 +78,83 @@ describe('iodu Domain tests', function () {
 
   describe('new todo', function () {
       it('should add a new todo to the model', function () {
-          setUpModel([]);
+          emptyDomain([]);
       });
 
       it('should add a new todo to the view', function () {
-          setUpModel([]);
+          emptyDomain([]);
       });
 
       it('should clear the input field when a new todo is added', function () {
-          setUpModel([]);
+          emptyDomain([]);
       });
   });
 
   describe('element removal', function () {
       it('should remove an entry from the model', function () {
           var todo = {id: 42, title: 'my todo', completed: true};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should remove an entry from the view', function () {
           var todo = {id: 42, title: 'my todo', completed: true};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should update the element count', function () {
           var todo = {id: 42, title: 'my todo', completed: true};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
   });
 
   describe('remove completed', function () {
       it('should remove a completed entry from the model', function () {
           var todo = {id: 42, title: 'my todo', completed: true};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should remove a completed entry from the view', function () {
           var todo = {id: 42, title: 'my todo', completed: true};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
   });
 
   describe('element complete toggle', function () {
       it('should update the model', function () {
           var todo = {id: 21, title: 'my todo', completed: false};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should update the view', function () {
           var todo = {id: 42, title: 'my todo', completed: true};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
   });
 
   describe('edit item', function () {
       it('should switch to edit mode', function () {
           var todo = {id: 21, title: 'my todo', completed: false};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should leave edit mode on done', function () {
           var todo = {id: 21, title: 'my todo', completed: false};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should persist the changes on done', function () {
           var todo = {id: 21, title: 'my todo', completed: false};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should remove the element from the model when persisting an empty title', function () {
           var todo = {id: 21, title: 'my todo', completed: false};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should remove the element from the view when persisting an empty title', function () {
           var todo = {id: 21, title: 'my todo', completed: false};
-          setUpModel([todo]);
+          emptyDomain([todo]);
       });
 
       it('should leave edit mode on cancel', function () {

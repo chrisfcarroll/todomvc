@@ -1183,11 +1183,11 @@
 		}]
 	},
 	"javascript-iou": {
-		"name": "I.O.U. pattern",
-		"description": "IOU is Inputs, Outputs & Updates. It is a pattern, not a framework, in which you code just those parts of MVC not already provided to you by the browser and the DOM.",
+		"name": "The I.O.U. Pattern",
+		"description": "IOU – Inputs, Outputs & Updates – is a pattern, not a framework, for simply coding those parts of an M, V & C not already richly provided by the browser and the DOM.",
 		"homepage": "examples/vanillajs-iou",
 		"examples": [{
-			"name": "JavaScript IOU pattern Example",
+			"name": "JavaScript IOU Pattern Example",
 			"url": "examples/vanillajs-iou"
 		}]
 	},
