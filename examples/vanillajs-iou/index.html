@@ -33,14 +33,30 @@
 				<button id="clear-completed">Clear completed</button>
 			</footer>
 		</section>
+
+    <!------------------------------------------------------------------------->
 		<footer id="info">
 			<p>Double-click to edit a todo</p>
 			<p>Created by <a href="http://twitter.com/oscargodson">Oscar Godson</a></p>
 			<p>Refactored by <a href="https://github.com/cburgmer">Christoph Burgmer</a></p>
 			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 		</footer>
+
+    <!------------------------------------------------------------------------->
 		<script src="node_modules/todomvc-common/base.js"></script>
 		<script src="js/helpers.js"></script>
 		<script src="js/store.js"></script>
+
+    <!------------------------------------------------------------------------->
+    <script id="tests">
+      if(location.search.match(/test|debug/i)){
+        var scripts= ["qunit-1.18.0.js","qunit-parameterize.js","testhelpers.js",
+                      "domain-specifications.js",
+                      "ui-specifications.js"]
+        for(var i=0; i<scripts.length; i++){
+          document.writeln("<script src='test/" + scripts[i] +"'><"+"/script>")
+        }
+      }
+    </script>
 	</body>
 </html>

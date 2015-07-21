@@ -1,168 +1,168 @@
-/*global app, jasmine, describe, it, beforeEach, expect, jQuery*/
+//
+QUnit.module("Domain Specificatons");
 
-describe('iodu Domain tests', function () {
-  'use strict';
+QUnit.test('A todo can be added, and then retrieved',function(){
 
-  var emptyDomain = function () { domain = new Domain(); };
+  var entry1=new domain.ToDo("todo");
+  var entry2=new domain.ToDo("2");
+  //
+  domain.addToDo(entry1).addToDo(entry2);
+  var found1= domain.getToDoById(entry1.id);
+  var found2= domain.getToDoById(entry2.id);
+  //
+  assert.equal(found1,entry1);
+  assert.equal(found2,entry2);
+});
 
-  beforeEach(emptyDomain);
+//----------------------------------------------------------------
 
-  it('A todo can be added, and then retrieved',function(){
+QUnit.module('Domain Specificatons - Querying', {
 
-    var entry1=new domain.ToDo("todo");
-    var entry2=new domain.ToDo("2");
-    //
-    domain.addToDo(entry1).addToDo(entry2);
-    var found1= domain.getToDoById(entry1.id);
-    var found2= domain.getToDoById(entry2.id);
-    //
-    expect(found1).toBe(entry1);
-    expect(found2).toBe(entry2);
-  });
+  beforeEach: function () {
+    this.domain = new Domain();
+    this.todoActive = new domain.ToDo("todo 1 active");
+    this.todoCompleted = new domain.ToDo("todo 2 completed");
+    this.domain.addToDo(todoActive);
+    this.domain.addToDo(todoCompleted);
+    this.todoCompleted.complete();
+  }
+});
+
+QUnit.test('should getAll entries', function (assert) {
+  assert.greaterThan( domain.getAll().indexOf(todoActive), -1);
+  assert.greaterThan( domain.getAll().indexOf(todoCompleted), -1);
+});
+
+QUnit.test('should get active entries', function (assert) {
+  assert.greaterThan( domain.getActive().indexOf(todoActive), -1);
+  assert.greaterThan( domain.getActive().indexOf(todoCompleted), -1);
+});
+
+QUnit.test('should get completed entries', function (assert) {
+  assert.equal( domain.getCompleted().indexOf(todoActive) , -1);
+  assert.greaterThan( domain.getCompleted().indexOf(todoCompleted), -1);
+});
+
+QUnit.test('should show the content block when todos exists', function (assert) {
+});
+
+QUnit.test('should hide the content block when no todos exists', function (assert) {
+});
+
+QUnit.test('should check the toggle all button, if all todos are completed', function (assert) {
+});
+
+QUnit.test('should set the "clear completed" button', function (assert) {
+});
+
+QUnit.test('should highlight "All" filter by default', function (assert) {
+});
+
+QUnit.test('should highlight "Active" filter when switching to active view', function (assert) {
+});
 
 
-  describe('Querying', function () {
+//---------------------------------------------------------------------
+QUnit.module('Domain Specifications - toggle all');
 
-    var todoActive, todoCompleted;
+QUnit.test('should toggle all todos to completed', function (assert) {
+});
 
-    beforeEach(function(){
-      todoActive= new domain.ToDo("todo 1 active");
-      todoCompleted= new domain.ToDo("todo 2 completed");
-      domain.addToDo(todoActive);
-      domain.addToDo(todoCompleted);
-      todoCompleted.complete();
-    });
+QUnit.test('should update the view', function (assert) {
+});
 
 
-    it('should getAll entries', function () {
-      expect( domain.getAll().indexOf(todoActive) ).toBeGreaterThan(-1);
-      expect( domain.getAll().indexOf(todoCompleted) ).toBeGreaterThan(-1);
-    });
+//---------------------------------------------------------------------
+QUnit.module('Domain Specificatons - new todo');
+QUnit.test('should add a new todo to the model', function (assert) {
+});
 
-    it('should get active entries', function () {
-      expect( domain.getActive().indexOf(todoActive)).toBeGreaterThan(-1);
-      expect( domain.getActive().indexOf(todoCompleted)).toBe(-1);
-    });
+QUnit.test('should add a new todo to the view', function (assert) {
+});
 
-    it('should get completed entries', function () {
-      expect( domain.getCompleted().indexOf(todoActive)).toBe(-1);
-      expect( domain.getCompleted().indexOf(todoCompleted)).toBeGreaterThan(-1);
-    });
-  });
+QUnit.test('should clear the input field when a new todo is added', function (assert) {
+});
 
-  it('should show the content block when todos exists', function () {
-  });
 
-  it('should hide the content block when no todos exists', function () {
-  });
+//---------------------------------------------------------------------
+QUnit.module('Domain Specificatons - element removal');
 
-  it('should check the toggle all button, if all todos are completed', function () {
-  });
+QUnit.test('should remove an entry from the model', function (assert) {
+    var todo = {id: 42, title: 'my todo', completed: true};
 
-  it('should set the "clear completed" button', function () {
-  });
+});
 
-  it('should highlight "All" filter by default', function () {
-  });
+QUnit.test('should remove an entry from the view', function (assert) {
+    var todo = {id: 42, title: 'my todo', completed: true};
 
-  it('should highlight "Active" filter when switching to active view', function () {
-  });
+});
 
-  describe('toggle all', function () {
-      it('should toggle all todos to completed', function () {
-      });
+QUnit.test('should update the element count', function (assert) {
+    var todo = {id: 42, title: 'my todo', completed: true};
 
-      it('should update the view', function () {
-      });
-  });
+});
 
-  describe('new todo', function () {
-      it('should add a new todo to the model', function () {
-          emptyDomain([]);
-      });
 
-      it('should add a new todo to the view', function () {
-          emptyDomain([]);
-      });
+//---------------------------------------------------------------------
+QUnit.module('Domain Specificatons - remove completed');
 
-      it('should clear the input field when a new todo is added', function () {
-          emptyDomain([]);
-      });
-  });
+QUnit.test('should remove a completed entry from the model', function (assert) {
+    var todo = {id: 42, title: 'my todo', completed: true};
 
-  describe('element removal', function () {
-      it('should remove an entry from the model', function () {
-          var todo = {id: 42, title: 'my todo', completed: true};
-          emptyDomain([todo]);
-      });
+});
 
-      it('should remove an entry from the view', function () {
-          var todo = {id: 42, title: 'my todo', completed: true};
-          emptyDomain([todo]);
-      });
+QUnit.test('should remove a completed entry from the view', function (assert) {
+    var todo = {id: 42, title: 'my todo', completed: true};
 
-      it('should update the element count', function () {
-          var todo = {id: 42, title: 'my todo', completed: true};
-          emptyDomain([todo]);
-      });
-  });
+});
 
-  describe('remove completed', function () {
-      it('should remove a completed entry from the model', function () {
-          var todo = {id: 42, title: 'my todo', completed: true};
-          emptyDomain([todo]);
-      });
 
-      it('should remove a completed entry from the view', function () {
-          var todo = {id: 42, title: 'my todo', completed: true};
-          emptyDomain([todo]);
-      });
-  });
+//---------------------------------------------------------------------
+QUnit.module('Domain Specificatons - element complete toggle');
 
-  describe('element complete toggle', function () {
-      it('should update the model', function () {
-          var todo = {id: 21, title: 'my todo', completed: false};
-          emptyDomain([todo]);
-      });
+QUnit.test('should update the model', function (assert) {
+    var todo = {id: 21, title: 'my todo', completed: false};
 
-      it('should update the view', function () {
-          var todo = {id: 42, title: 'my todo', completed: true};
-          emptyDomain([todo]);
-      });
-  });
+});
 
-  describe('edit item', function () {
-      it('should switch to edit mode', function () {
-          var todo = {id: 21, title: 'my todo', completed: false};
-          emptyDomain([todo]);
-      });
+QUnit.test('should update the view', function (assert) {
+    var todo = {id: 42, title: 'my todo', completed: true};
 
-      it('should leave edit mode on done', function () {
-          var todo = {id: 21, title: 'my todo', completed: false};
-          emptyDomain([todo]);
-      });
+});
 
-      it('should persist the changes on done', function () {
-          var todo = {id: 21, title: 'my todo', completed: false};
-          emptyDomain([todo]);
-      });
 
-      it('should remove the element from the model when persisting an empty title', function () {
-          var todo = {id: 21, title: 'my todo', completed: false};
-          emptyDomain([todo]);
-      });
+//---------------------------------------------------------------------
+QUnit.module('Domain Specificatons - edit item');
 
-      it('should remove the element from the view when persisting an empty title', function () {
-          var todo = {id: 21, title: 'my todo', completed: false};
-          emptyDomain([todo]);
-      });
+QUnit.test('should switch to edit mode', function (assert) {
+  var todo = {id: 21, title: 'my todo', completed: false};
 
-      it('should leave edit mode on cancel', function () {
-          var todo = {id: 21, title: 'my todo', completed: false};
-      });
+});
 
-      it('should not persist the changes on cancel', function () {
-          var todo = {id: 21, title: 'my todo', completed: false};
-      });
-  });
+QUnit.test('should leave edit mode on done', function (assert) {
+    var todo = {id: 21, title: 'my todo', completed: false};
+
+});
+
+QUnit.test('should persist the changes on done', function (assert) {
+    var todo = {id: 21, title: 'my todo', completed: false};
+
+});
+
+QUnit.test('should remove the element from the model when persisting an empty title', function (assert) {
+    var todo = {id: 21, title: 'my todo', completed: false};
+
+});
+
+QUnit.test('should remove the element from the view when persisting an empty title', function (assert) {
+    var todo = {id: 21, title: 'my todo', completed: false};
+
+});
+
+QUnit.test('should leave edit mode on cancel', function (assert) {
+    var todo = {id: 21, title: 'my todo', completed: false};
+});
+
+QUnit.test('should not persist the changes on cancel', function (assert) {
+    var todo = {id: 21, title: 'my todo', completed: false};
 });
